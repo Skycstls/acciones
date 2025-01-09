@@ -1,4 +1,4 @@
-name: Network Scan Continuous
+name: Network Scan Continuous Fast
 
 on:
   schedule:
