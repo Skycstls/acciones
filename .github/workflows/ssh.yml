@@ -1,0 +1,13 @@
+name: Conexion SSH
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    hola:
+        runs-on: ubuntu-latest
+        steps:
+            - name: check ssh
+              run: ssh -v
