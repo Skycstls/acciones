@@ -18,7 +18,7 @@ jobs:
         run: sudo nmap -sS -p 22,80,443 nike.com -oN nmap_report.txt
 
       - name: Upload scan report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nmap-scan-cron
           path: nmap_report.txt
