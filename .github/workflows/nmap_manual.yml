@@ -1,0 +1,22 @@
+name: Hola mundo
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    hola:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Hola mundo
+              run: echo "Hola mundo"
+            - name: Instalar nmap
+              run: sudo apt-get install nmap
+            - name: Escanear nike.com
+              run:  nmap nike.com -oN nmap_report.txt
+            - name: Subir reporte de escaneo
+              uses: actions/upload-artifact@v3
+              with:
+                name: nmap-scan
+                path: nmap_report.txt
