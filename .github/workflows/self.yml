@@ -1,4 +1,4 @@
-name: Hola mundo
+name: Escaneo ifconfig
 
 on:
     push:
