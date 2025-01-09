@@ -6,7 +6,7 @@ on:
             - master
 
 jobs:
-    hola:
+    escaneo_manual:
         runs-on: ubuntu-latest
         steps:
             - name: Hola mundo
