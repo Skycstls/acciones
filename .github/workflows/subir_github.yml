@@ -1,7 +1,9 @@
 name: Add File to Repo
 
 on:
-  workflow_dispatch: # Permite ejecutar manualmente la acción
+  push:
+    branches:
+      - master
 
 jobs:
   add-file:
