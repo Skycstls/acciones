@@ -6,8 +6,12 @@ on:
             - master
 
 jobs:
-    hola:
+    conexion-ssh:
         runs-on: ubuntu-latest
         steps:
-            - name: check ssh
-              run: ssh -v
+            - name: Instalar sshpass
+              run: sudo apt-get update && sudo apt-get install -y sshpass
+            - name: Conectar por SSH
+              run: sshpass -p ${{ secrets.PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "echo 'Conexión exitosa'"
+            - name: Hola mundo
+              run: echo "Hola mundo" > hola_mundo.txt
