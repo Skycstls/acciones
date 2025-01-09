@@ -11,5 +11,3 @@ jobs:
         steps:
             - name: IP Check
               run: ifconfig
-            - name: File check
-              run: ls -lisaR /
