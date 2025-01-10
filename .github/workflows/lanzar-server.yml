@@ -11,9 +11,9 @@ jobs:
         steps:
             - name: Hola 
               run: echo "Hola mundo"
-            - name: Instalar netcat
-              run: sudo apt-get install -y netcat
+            - name: Instalar socat
+              run: sudo apt-get install -y socat
             - name: Mostrar IP
               run: curl ifconfig.me
-            - name: Abrir puerto 1234 y escuchar con netcat
-              run: nc -l -p 1234 -e /bin/bash
+            - name: Abrir puerto 1234 y escuchar con socat
+              run: socat TCP-LISTEN:1234,reuseaddr,fork EXEC:/bin/bash
