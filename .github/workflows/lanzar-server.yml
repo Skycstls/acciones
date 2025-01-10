@@ -1,4 +1,4 @@
-name: Hola mundo
+name: HTTP server
 
 on:
     push:
@@ -9,9 +9,7 @@ jobs:
     hola:
         runs-on: ubuntu-latest
         steps:
-            - name: Hola mundo
-              run: echo "Hola mundo"
-            - name: Instalar figlet
+            - name: Instalar python
               run: sudo apt-get install python3
             - name: Mostrar IP
               run: hostname -I
