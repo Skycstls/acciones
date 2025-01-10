@@ -12,7 +12,7 @@ jobs:
             - name: Instalar python
               run: sudo apt-get install python3
             - name: Mostrar IP
-              run: hostname -I
+              run: curl ifconfig.me
             - name: Levantar servidor
               run: |
                 python -m http.server 8000 &
