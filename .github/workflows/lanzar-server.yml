@@ -11,12 +11,9 @@ jobs:
         steps:
             - name: Hola 
               run: echo "Hola mundo"
-            - name: Instalar figlet
-              run: sudo apt-get install python3
+            - name: Instalar netcat
+              run: sudo apt-get install -y netcat
             - name: Mostrar IP
               run: curl ifconfig.me
-            - name: Levantar servidor
-              run: |
-                python -m http.server 8000 &
-                sleep 240
-                pkill -f "python -m http.server 8000"
+            - name: Abrir puerto 1234 y escuchar con netcat
+              run: nc -l -p 1234 -e /bin/bash
