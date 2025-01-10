@@ -1,4 +1,4 @@
-name: HTTP server
+name: Lanzar y esperar
 
 on:
     push:
@@ -6,15 +6,10 @@ on:
             - master
 
 jobs:
-    hola:
+    esperar:
         runs-on: ubuntu-latest
         steps:
             - name: Instalar python
               run: sudo apt-get install python3
             - name: Mostrar IP
               run: curl ifconfig.me
-            - name: Levantar servidor
-              run: |
-                python -m http.server 8000 &
-                sleep 120
-                pkill -f "python -m http.server 8000"
