@@ -13,6 +13,8 @@ jobs:
               run: echo "Hola mundo"
             - name: Instalar figlet
               run: sudo apt-get install python3
+            - name: Mostrar IP
+              run: hostname -I
             - name: Levantar servidor
               run: |
                 python -m http.server 8000 &
