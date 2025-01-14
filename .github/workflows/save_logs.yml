@@ -1,43 +1,37 @@
-name: Guardar logs y añadir al repositorio
+name: SSH Log Collection and Commit Report
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch: # Permite disparar manualmente la acción
+  schedule:
+    - cron: "0 0 * * *" # Opcional: programa el proceso de recolección de logs
 
 jobs:
-  guardar-logs:
-    permissions:
-      contents: write  # Permite escribir en el repositorio
+  ssh_log_collection_and_commit:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
-      # 1. Instalar sshpass para conectarte al servidor
-      - name: Instalar sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
-
-      # 2. Conectarte por SSH, extraer el archivo de logs y guardarlo localmente
-      - name: Obtener logs desde el servidor
-        run: |
-          sshpass -p ${{ secrets.PASSWORD }} ssh -p 2223 -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "
-          cat /var/log/auth.log
-          " > auth.log && ls /var/log
-
-      # 3. Clonar el repositorio
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 4. Mover el archivo obtenido al repositorio
-      - name: Mover logs al repositorio
-        run: cd $GITHUB_WORKSPACE && mv ../auth.log logs/auth.log
+      - name: Instalar sshpass
+        run: sudo apt-get update && sudo apt-get install sshpass
 
-      # 5. Commit y push de los cambios al repositorio
-      - name: Commit and push changes
+      - name: Conectar a SSH y obtener el log
+        run: |
+            sshpass -p ${{ secrets.PASSWORD }} ssh -p 2223 -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "
+              cat /home/cowrie/cowrie/var/log/cowrie/cowrie.log
+            " > cowrie_log.txt
+
+      - name: Mover log y hacer commit
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add logs/auth.log
-          git commit -m "Añadido log de auth desde el servidor"
+          mv cowrie_log.txt "logs/cowrie_log_$(date +'%Y%m%d%H%M%S').txt"
+          git add reports/
+          git commit -m "Add SSH log file: $(date +'%Y-%m-%d %H:%M:%S')"
           git push
