@@ -1,0 +1,19 @@
+name: Guardar logs
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    save-logs:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Instalar sshpass
+              run: sudo apt-get update && sudo apt-get install -y sshpass
+            - name: Conectar por SSH
+              run: |
+                sshpass -p ${{ secrets.PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "
+                echo 'Conexión exitosa' &&
+                echo 'Hola mundo' > diego.txt"
+                echo 'Esto funciona'
