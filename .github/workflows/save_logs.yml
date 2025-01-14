@@ -1,19 +1,43 @@
-name: Guardar logs
+name: Guardar logs y añadir al repositorio
 
 on:
-    push:
-        branches:
-            - master
+  push:
+    branches:
+      - master
 
 jobs:
-    save-logs:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Instalar sshpass
-              run: sudo apt-get update && sudo apt-get install -y sshpass
-            - name: Conectar por SSH
-              run: |
-                sshpass -p ${{ secrets.PASSWORD }} ssh -p 2223 -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "
-                echo 'Conexión exitosa' &&
-                echo 'Hola mundo' > diego.txt
-                echo 'Esto funciona bien'"
+  guardar-logs:
+    permissions:
+      contents: write  # Permite escribir en el repositorio
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Instalar sshpass para conectarte al servidor
+      - name: Instalar sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      # 2. Conectarte por SSH, extraer el archivo de logs y guardarlo localmente
+      - name: Obtener logs desde el servidor
+        run: |
+          sshpass -p ${{ secrets.PASSWORD }} ssh -p 2223 -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "
+          cat /var/log/auth.log
+          " > auth.log
+
+      # 3. Clonar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 4. Mover el archivo obtenido al repositorio
+      - name: Mover logs al repositorio
+        run: mv auth.log logs/auth.log
+
+      # 5. Commit y push de los cambios al repositorio
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add logs/auth.log
+          git commit -m "Añadido log de auth desde el servidor"
+          git push
