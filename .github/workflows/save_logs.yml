@@ -29,7 +29,7 @@ jobs:
 
       # 4. Mover el archivo obtenido al repositorio
       - name: Mover logs al repositorio
-        run: ls && mv auth.log logs/auth.log
+        run: cd $GITHUB_WORKSPACE && mv ../auth.log logs/auth.log
 
       # 5. Commit y push de los cambios al repositorio
       - name: Commit and push changes
