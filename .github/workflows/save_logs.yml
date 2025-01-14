@@ -21,7 +21,7 @@ jobs:
         run: |
           sshpass -p ${{ secrets.PASSWORD }} ssh -p 2223 -o StrictHostKeyChecking=no ${{ secrets.USER }}@${{ secrets.IP }} "
           cat /var/log/auth.log
-          " > auth.log
+          " > auth.log && ls /var/log
 
       # 3. Clonar el repositorio
       - name: Checkout repository
