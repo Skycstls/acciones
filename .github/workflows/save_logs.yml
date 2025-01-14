@@ -32,6 +32,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           mv cowrie_log.txt "logs/cowrie_log_$(date +'%Y%m%d%H%M%S').txt"
-          git add reports/
+          git add .
           git commit -m "Add SSH log file: $(date +'%Y-%m-%d %H:%M:%S')"
           git push
